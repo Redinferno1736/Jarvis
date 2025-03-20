@@ -1,0 +1,15 @@
+Flask==3.0.2
+authlib==1.2.1
+python-dotenv==1.0.1
+pymongo==4.7.2
+Werkzeug==3.0.2
+bcrypt==4.1.2
+google-generativeai==0.4.0
+SpeechRecognition==3.10.0
+gtts==2.3.2
+pyttsx3==2.90
+yt-dlp==2024.3.10
+slugify==0.0.1
+requests==2.31.0
+datetime==5.4
+gridfs==4.7.2
