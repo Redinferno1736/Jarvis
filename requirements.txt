@@ -12,4 +12,3 @@ yt-dlp==2024.3.10
 slugify==0.0.1
 requests==2.31.0
 datetime==5.4
-gridfs==4.7.2
