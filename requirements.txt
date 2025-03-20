@@ -9,7 +9,7 @@ SpeechRecognition==3.10.0
 gtts==2.3.2
 pyttsx3==2.90
 yt-dlp==2024.3.10
-slugify==0.0.1
+python-slugify==8.0.1
 requests==2.31.0
 datetime==5.4
 gunicorn==21.2.0
