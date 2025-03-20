@@ -110,6 +110,12 @@ def main_page():
     documents = list(sav.find())
     return render_template("jip.html", documents=documents)
 
+@app.route("/new")
+def new_chat():
+    sav = db[slugify(session['username'])]
+    db.drop_collection(sav) 
+    return redirect('/home')
+
 @app.route("/logout")
 def logout():
     session.clear()

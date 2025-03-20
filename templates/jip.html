@@ -4,19 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>home</title>
+    <title>Home</title>
     <link rel="stylesheet" href="/static/jip.css">
 </head>
 
 <body>
-    <div class="txt">
-        Hello! I am Jarvis, How can I help you?
-    </div>
-    
+    {% if not documents %}
+        <div class="txt">
+            Hello! I am Jarvis, How can I help you?
+        </div>
+    {% endif %}
     <form action="/home" method="post">
         <div class="sb">
             <img class="i1" src="/static/assets/jarvis logo.jpg" alt="">
-            <img class="i2" src="/static/assets/new-chat_12380562.png" alt="">
+            <button class="newchat" type="button" onclick="window.location.href='/new'">
+                <img class="i2" src="/static/assets/new-chat_12380562.png" alt="">
+            </button>
             <img class="i3" src="/static/assets/pngwing.com.png" alt="">
         </div>
         <div class="ip">
@@ -30,19 +33,18 @@
     <!-- ✅ Dynamically Display Chat History -->
     <div class="chat-history">
         {% for doc in documents %}
-            <div class="chat-item">
-                <div class="chat-question">
-                    <strong>You:</strong> {{ doc.question }}
-                </div>
-                <div class="chat-reply">
-                    <strong>Jarvis:</strong> {{ doc.reply }}
-                </div>
-                <div class="chat-time">
-                    {{ doc.time.strftime('%Y-%m-%d %I:%M %p') }}
-                </div>
+            <div class="chat-item user-message">
+                {{ doc.question }}
+            </div>
+            <div class="chat-item bot-message">
+                {{ doc.reply }}
+            </div>
+            <div class="chat-time">
+                {{ doc.time.strftime('%Y-%m-%d %I:%M %p') }}
             </div>
         {% endfor %}
     </div>
+    
 </body>
 
 </html>

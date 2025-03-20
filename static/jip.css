@@ -52,10 +52,23 @@ body{
 .i3{
     top: 85%;
 }
-.i2{
-    top: 25%;
+.newchat {
+    all: unset; /* Removes default button styling */
+    display: inline-block;
+    cursor: pointer;
+    top:20%;
+    position: absolute;
+    width:4vw ;
+    height:9vh ;
 }
 
+.i2 {
+    width: 50px; /* Adjust size based on your image */
+    height: 50px;
+    object-fit: cover;
+    position: absolute;
+     /* Ensures the image is fully visible */
+}
 .i1{
     top:9%;
 }
@@ -68,26 +81,46 @@ body{
 .chat-history {
     margin-top: 20px;
     padding: 10px;
-    max-height: 400px;
-    overflow-y: auto; /* Add scrollbar if needed */
+    max-height: 90vh; /* Increased from 400px */
+    overflow-y: auto; /* ✅ Ensures scrolling */
     background-color: #f9f9f9;
     border-radius: 10px;
     border: 1px solid #ddd;
+    width: 80vw;
+    display: flex;
+    flex-direction: column;
 }
 
-.chat-item {
-    margin-bottom: 12px;
-    padding: 10px;
-    background-color: #ffffff;
-    border-radius: 8px;
+/* ✅ User message (aligned to the right) */
+.user-message {
+    background-color: #dcf8c6;
+    color: #000;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 70%;
+    align-self: flex-end;
+    margin-bottom: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: left;
 }
 
-.chat-question, .chat-reply {
-    margin-bottom: 5px;
+/* ✅ Bot message (aligned to the left) */
+.bot-message {
+    background-color: #e5e5ea;
+    color: #000;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 70%;
+    align-self: flex-start;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: left;
 }
 
 .chat-time {
     font-size: 12px;
     color: #888;
+    margin-bottom: 15px;
+    text-align: center;
 }
+
