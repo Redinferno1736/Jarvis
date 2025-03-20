@@ -6,8 +6,7 @@ import platform
 from dotenv import load_dotenv
 import requests
 import datetime
-from youtubesearchpython import VideosSearch
-
+import yt_dlp
 # Load environment variables
 load_dotenv()
 
@@ -120,14 +119,19 @@ def play(text):
     if not t:
         return "Please specify a song name."
 
-    search = VideosSearch(t, limit=1)
-    results = search.result()
+    ydl_opts = {
+        'quiet': True,
+        'extract_flat': True,
+        'format': 'bestaudio/best'
+    }
 
-    if results and "result" in results and len(results["result"]) > 0:
-        first_video_url = results["result"][0]["link"]
-        return first_video_url  # Just return the URL
-    else:
-        return "No results found."
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        search_results = ydl.extract_info(f"ytsearch:{t}", download=False)
+        if search_results and 'entries' in search_results and len(search_results['entries']) > 0:
+            first_video_url = search_results['entries'][0]['url']
+            return first_video_url
+        else:
+            return "No results found."
 
 
 def generate_response(user_input):
