@@ -77,10 +77,9 @@ def get_latest_news():
 def fetch_real_time_data(query):
     query = query.lower()
 
-    if "time" in query:
-        current_time = datetime.datetime.now().strftime("%I:%M %p")  # 12-hour format
-        jarvis_response = f"The current time is {current_time}."
-        print(f"🤖 Jarvis: {jarvis_response}")  # Print what Jarvis says
+    if "play" in query:
+        jarvis_response=play(query)
+        print(f"🤖 Jarvis: {jarvis_response}")
         return jarvis_response
 
     elif "weather" in query:
@@ -95,9 +94,11 @@ def fetch_real_time_data(query):
         print(f"🤖 Jarvis: {jarvis_response}")  # Print what Jarvis says
         return jarvis_response
 
-    elif "play" in query:
-        jarvis_response=play(query)
-        print(f"🤖 Jarvis: {jarvis_response}")
+    elif "time" in query:
+        current_time = datetime.datetime.now().strftime("%I:%M %p")  # 12-hour format
+        jarvis_response = f"The current time is {current_time}."
+        print(f"🤖 Jarvis: {jarvis_response}")  # Print what Jarvis says
+        return jarvis_response
         # return f"Here is the link to your song: {play(query)}" 
 
     return None  # If no real-time data is needed
