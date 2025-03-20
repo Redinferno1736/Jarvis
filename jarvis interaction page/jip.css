@@ -1,0 +1,59 @@
+.sb{
+    background-color: rgb(217, 217,217);
+    padding: 15px;
+    height: 90vh;
+    width: 5vw;
+    border-radius: 20px;
+    margin: 10px;
+}
+body{
+  
+    display: flex;
+}
+.ip{
+    position: absolute;
+    bottom: 0;
+    left: 30%;
+    top: 88%;
+    
+
+}
+.ip input{
+    border-radius: 20px;
+    width: 40vw;
+    height: 5vh;
+    padding: 10px 44px;
+    background-color: rgb(217, 217,217);
+    border-style: none;
+}
+.txt{
+    position: absolute;
+    align-self: center;
+    left: 35%;
+    font-size: 30px;
+}
+.mic{
+    height: 7vh;
+    width: 4vw;
+    border-radius: 100%;
+    background-color: rgb(217, 217,217);
+    position: absolute;
+    left: 78%;
+    top: 88%;
+}
+.sb img{
+    position: absolute;
+    width:4vw ;
+    height:9vh ;
+}
+.i3{
+    top: 85%;
+}
+.i2{
+    top: 18%;
+}
+.mic img{
+    height: 7vh;
+    width: 4vw;
+    border-radius: 100%;
+}

@@ -1,0 +1,91 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+.st {
+    display: flex;
+    justify-items: center;
+    /* align-content: center; */
+    align-items: center;
+    gap: 10px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.nav nav {
+    background-color: grey;
+    height: 12vh;
+}
+
+.st img {
+    width: 60px;
+    border-radius: 100px;
+    padding: 12px;
+}
+
+.st p {
+    font-size: 40px;
+    align-items: center;
+    text-align: center;
+}
+
+button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+    padding: 15px 25px;
+    align-content: center;
+    border-radius: 100px;
+    border: 2px solid black;
+    cursor: pointer;
+}
+
+.btn {
+    margin-right: 30px;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 45px;
+    padding-right: 40px;
+    padding-left: 40px;
+}
+.right{
+    height: 77vh;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    width: 50vw;
+}
+.left{
+    height: 77vh;
+    width: 50vw;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px;
+    
+}
+.one{
+    font-size: 30px;
+}
+.img img{
+    height: 50vh;
+    
+}
+.txt{
+    font-size: 25px;
+    font-style: italic;
+    font-weight: 700;
+}
