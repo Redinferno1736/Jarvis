@@ -64,3 +64,30 @@ body{
     width: 4vw;
     border-radius: 100%;
 }
+
+.chat-history {
+    margin-top: 20px;
+    padding: 10px;
+    max-height: 400px;
+    overflow-y: auto; /* Add scrollbar if needed */
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.chat-item {
+    margin-bottom: 12px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.chat-question, .chat-reply {
+    margin-bottom: 5px;
+}
+
+.chat-time {
+    font-size: 12px;
+    color: #888;
+}

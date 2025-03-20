@@ -7,6 +7,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from pymongo.errors import DuplicateKeyError
 from datetime import datetime, timezone
 import io
+import helpers
+from slugify import slugify
 
 load_dotenv()
 
@@ -94,12 +96,19 @@ def register_page():
     else:
         return render_template("register.html")
 
-@app.route("/home",methods=["GET","POST"])
+@app.route("/home", methods=["GET", "POST"])
 def main_page():
-    if request.method=="POST":
-        pass
-    else:
-        return render_template("jip.html")
+    if "username" not in session:
+        return redirect("/login")
+    sav = db[slugify(session['username'])]
+    if request.method == "POST":
+        user_query = request.form.get('user_query')
+        response = helpers.generate_response(user_query)
+        helpers.speak_text(response)
+        time = datetime.now()
+        sav.insert_one({'question': user_query, 'reply': response, 'time': time})
+    documents = list(sav.find())
+    return render_template("jip.html", documents=documents)
 
 @app.route("/logout")
 def logout():

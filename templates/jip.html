@@ -1,25 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>home</title>
     <link rel="stylesheet" href="/static/jip.css">
 </head>
+
 <body>
-    <div class="sb">
-        <img class="i1" src="/static/assets/jarvis logo.jpg" alt="" srcset="">
-        <img class="i2" src="/static/assets/new-chat_12380562.png" alt="" srcset="">
-        <img class="i3" src="/static/assets/pngwing.com.png" alt="" srcset="">
-    </div>
-    <div class="ip">
-        <input type="text" placeholder="Type or Record">
-    </div>
     <div class="txt">
-        Hello! I am Jarvis , How can I help you?
+        Hello! I am Jarvis, How can I help you?
     </div>
-    <div class="mic">
-        <img src="/static/assets/pngegg.png" alt="" srcset="">
+    
+    <form action="/home" method="post">
+        <div class="sb">
+            <img class="i1" src="/static/assets/jarvis logo.jpg" alt="">
+            <img class="i2" src="/static/assets/new-chat_12380562.png" alt="">
+            <img class="i3" src="/static/assets/pngwing.com.png" alt="">
+        </div>
+        <div class="ip">
+            <input type="text" placeholder="Type or Record" name="user_query" required>
+        </div>
+        <div class="mic">
+            <img src="/static/assets/pngegg.png" alt="">
+        </div>
+    </form>
+
+    <!-- ✅ Dynamically Display Chat History -->
+    <div class="chat-history">
+        {% for doc in documents %}
+            <div class="chat-item">
+                <div class="chat-question">
+                    <strong>You:</strong> {{ doc.question }}
+                </div>
+                <div class="chat-reply">
+                    <strong>Jarvis:</strong> {{ doc.reply }}
+                </div>
+                <div class="chat-time">
+                    {{ doc.time.strftime('%Y-%m-%d %I:%M %p') }}
+                </div>
+            </div>
+        {% endfor %}
     </div>
 </body>
+
 </html>
