@@ -116,6 +116,16 @@ def new_chat():
     db.drop_collection(sav) 
     return redirect('/home')
 
+@app.route('/voicesearch')
+def vsearch():
+    user_query=helpers.recognize_speech()
+    sav = db[slugify(session['username'])]
+    response = helpers.generate_response(user_query)
+    helpers.speak_text(response)
+    time = datetime.now()
+    sav.insert_one({'question': user_query, 'reply': response, 'time': time})
+    return redirect('/home')
+
 @app.route("/logout")
 def logout():
     session.clear()

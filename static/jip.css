@@ -35,14 +35,44 @@ body{
     left: 35%;
     font-size: 30px;
 }
-.mic{
-    height: 7vh;
-    width: 4vw;
-    border-radius: 100%;
-    background-color: rgb(217, 217,217);
+.input-container {
+    display: flex;
+    align-items: center; /* ✅ Aligns input and button vertically */
+    gap: 10px; /* ✅ Adds space between input and button */
     position: absolute;
-    left: 78%;
+    bottom: 0;
+    left: 30%;
     top: 88%;
+}
+
+/* Adjust input width to make room for mic button */
+.input-container input {
+    flex-grow: 1; /* ✅ Allows input to take remaining space */
+    border-radius: 20px;
+    height: 5vh;
+    padding: 10px 44px;
+    background-color: rgb(217, 217, 217);
+    border-style: none;
+    width: 35vw; /* ✅ Adjust based on the available space */
+}
+
+/* ✅ Keep mic button styling unchanged */
+.mic {
+    height: 5vh;
+    width: 5vh;
+    border-radius: 100%;
+    background-color: rgb(217, 217, 217);
+    all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.mic img {
+    height: 4vh;
+    width: 4vh;
+    border-radius: 100%;
 }
 .sb img{
     position: absolute;
