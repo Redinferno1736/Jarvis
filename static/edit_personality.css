@@ -1,0 +1,103 @@
+/* General body styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container styling */
+.container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    transition: transform 0.2s ease;
+}
+
+.container:hover {
+    transform: translateY(-3px);
+}
+
+/* Heading styling */
+h2 {
+    text-align: center;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+/* Input styling */
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: #4CAF50;
+}
+
+/* Save Button */
+.save-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-bottom: 10px;
+}
+
+.save-btn:hover {
+    background-color: #45a049;
+}
+
+/* Cancel Button */
+.cancel-btn {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    color: #4CAF50;
+    background-color: transparent;
+    border: 1px solid #4CAF50;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+}
+
+.cancel-btn:hover {
+    background-color: #f0f0f0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 400px) {
+    .container {
+        width: 90%;
+    }
+}

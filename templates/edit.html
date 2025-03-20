@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Personality</title>
+    <link rel="stylesheet" href="/static/edit_personality.css" />
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Edit Personality</h2>
+        <form action="/edit" method="POST">
+            <div class="form-group">
+                <label for="character-name">Character Name</label>
+                <input type="text" id="character-name" name="name" placeholder="Enter character name" required />
+            </div>
+
+            <div class="form-group">
+                <label for="personality-trait">Personality Trait</label>
+                <input type="text" id="personality-trait" name="trait" placeholder="Enter personality trait" required />
+            </div>
+
+            <button type="submit" class="save-btn">Save Changes</button>
+            <a href="/home" class="cancel-btn">Cancel</a>
+        </form>
+    </div>
+
+</body>
+
+</html>

@@ -36,6 +36,10 @@ def home():
 
 @app.route("/login",methods=["GET","POST"])
 def login_page():
+    session['data']={
+        'name':'jarvis',
+        'trait':'accurately'
+    }
     if request.method=="POST":
         username=request.form.get("username")
         password=request.form.get("password")
@@ -100,15 +104,18 @@ def register_page():
 def main_page():
     if "username" not in session:
         return redirect("/login")
+    username=session['username']
+    name=session['data']['name']
+    trait=session['data']['trait']
     sav = db[slugify(session['username'])]
     if request.method == "POST":
         user_query = request.form.get('user_query')
-        response = helpers.generate_response(user_query)
+        response = helpers.generate_response(user_query,name,trait)
         helpers.speak_text(response)
         time = datetime.now()
         sav.insert_one({'question': user_query, 'reply': response, 'time': time})
     documents = list(sav.find())
-    return render_template("jip.html", documents=documents)
+    return render_template("jip.html", documents=documents,username=username,name=name)
 
 @app.route("/new")
 def new_chat():
@@ -118,9 +125,11 @@ def new_chat():
 
 @app.route('/voicesearch')
 def vsearch():
+    name=session['data']['name']
+    trait=session['data']['trait']
     user_query=helpers.recognize_speech()
     sav = db[slugify(session['username'])]
-    response = helpers.generate_response(user_query)
+    response = helpers.generate_response(user_query,name,trait)
     helpers.speak_text(response)
     time = datetime.now()
     sav.insert_one({'question': user_query, 'reply': response, 'time': time})
@@ -130,6 +139,20 @@ def vsearch():
 def logout():
     session.clear()
     return redirect('/') 
+
+@app.route('/edit',methods=['GET','POST'])
+def edit():
+    if request.method=='POST':
+        name=request.form.get("name")
+        trait=request.form.get("trait")
+        session['data']={
+            'name':name,
+            'trait':trait
+        }
+        return redirect('/home')
+    else:
+        return render_template('edit.html')
+
 
 if __name__ == "__main__":
     app.run(debug=False)

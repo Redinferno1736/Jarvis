@@ -10,9 +10,9 @@
 
 <body>
     {% if not documents %}
-        <div class="txt">
-            Hello! I am Jarvis, How can I help you?
-        </div>
+    <div class="txt">
+        Hello! I am {{name}}, How can I help you?
+    </div>
     {% endif %}
     <form action="/home" method="post">
         <div class="sb">
@@ -20,7 +20,15 @@
             <button class="newchat" type="button" onclick="window.location.href='/new'">
                 <img class="i2" src="/static/assets/new-chat_12380562.png" alt="">
             </button>
-            <img class="i3" src="/static/assets/pngwing.com.png" alt="">
+            <div class="profile">
+                <img class="i3" src="/static/assets/pngwing.com.png" alt="">
+                <ul class="dropdown-content">
+                    <li>Name: {{ username or 'N/A' }}</li>
+                    <li><a href="/edit">Edit Personality</a></li>
+                    <li><a href="/logout">Log Out</a></li>
+                </ul>
+            </div>            
+
         </div>
         <div class="input-container">
             <input type="text" placeholder="Type or Record" name="user_query" required>
@@ -28,24 +36,23 @@
                 <img src="/static/assets/pngegg.png" alt="">
             </button>
         </div>
-        
+
     </form>
 
-    <!-- ✅ Dynamically Display Chat History -->
     <div class="chat-history">
         {% for doc in documents %}
-            <div class="chat-item user-message">
-                {{ doc.question }}
-            </div>
-            <div class="chat-item bot-message">
-                {{ doc.reply }}
-            </div>
-            <div class="chat-time">
-                {{ doc.time.strftime('%Y-%m-%d %I:%M %p') }}
-            </div>
+        <div class="chat-item user-message">
+            {{ doc.question }}
+        </div>
+        <div class="chat-item bot-message">
+            {{ doc.reply }}
+        </div>
+        <div class="chat-time">
+            {{ doc.time.strftime('%Y-%m-%d %I:%M %p') }}
+        </div>
         {% endfor %}
     </div>
-    
+
 </body>
 
 </html>
