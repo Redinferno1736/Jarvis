@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jarvis Login</title>
+    <title>Jarvis Register</title>
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
@@ -14,10 +14,10 @@
         </div>
         
         
-        <form>
-            <input type="text" placeholder="Username/Mobile-Number" required>
-            <input type="password" placeholder="Password" required>
-            <input type="password" placeholder="Confirm Password" required>
+        <form action="/register" method="post">
+            <input type="text" placeholder="Username/Mobile-Number" required name="username">
+            <input type="password" placeholder="Password" required name="password">
+            <input type="password" placeholder="Confirm Password" required name="confirm">
 
             <div class="terms">
                 <input type="checkbox" id="agree">
@@ -29,12 +29,12 @@
             <button type="submit" class="login-btn">Register</button>
             
             <div class="links">
-                <a href="login.html" class="signup">LogIn</a>
+                <a href="/login" class="signup">LogIn</a>
             </div>
 
             <div class="divider">OR</div>
 
-            <button class="google">
+            <button class="google" onclick="window.location.href='/client/auth/google'">
                 <img src="/static/assets/ggl.png" alt="Google"> Sign in with Google
             </button>
         </form>

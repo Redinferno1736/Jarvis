@@ -5,6 +5,9 @@
     width: 5vw;
     border-radius: 20px;
     margin: 10px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
 body{
   
@@ -50,7 +53,11 @@ body{
     top: 85%;
 }
 .i2{
-    top: 18%;
+    top: 25%;
+}
+
+.i1{
+    top:9%;
 }
 .mic img{
     height: 7vh;

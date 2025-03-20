@@ -14,9 +14,9 @@
         </div>
         
         
-        <form>
-            <input type="text" placeholder="Username/Mobile-Number" required>
-            <input type="password" placeholder="Password" required>
+        <form action="/login" method="post">
+            <input type="text" placeholder="Username/Mobile-Number" required name="username">
+            <input type="password" placeholder="Password" required name="password">
 
             <div class="terms">
                 <input type="checkbox" id="agree">
@@ -28,12 +28,12 @@
             <button type="submit" class="login-btn">Login</button>
             
             <div class="links">
-                <a href="register.html" class="signup">Sign up</a>
+                <a href="/register" class="signup">Sign up</a>
             </div>
 
             <div class="divider">OR</div>
 
-            <button class="google">
+            <button class="google" onclick="window.location.href='/client/auth/google'">
                 <img src="/static/assets/ggl.png" alt="Google"> Login with Google
             </button>
         </form>
