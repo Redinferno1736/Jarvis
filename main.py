@@ -1,6 +1,6 @@
 import os
 import io
-from flask import Flask, redirect, url_for, jsonify, session, request, render_template, flash, send_file, url_for
+from flask import Flask, redirect, url_for, jsonify, session, request, render_template, flash, send_file, url_for,Response
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 from pymongo import MongoClient
@@ -12,10 +12,12 @@ from slugify import slugify
 import gridfs
 from pydub import AudioSegment
 import speech_recognition as sr
+from gtts import gTTS
+from google.cloud import texttospeech
 
 load_dotenv()
 
-AudioSegment.converter = os.path.abspath("ffmpeg/ffmpeg")
+# AudioSegment.converter = os.path.abspath("ffmpeg/ffmpeg")
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -171,6 +173,30 @@ def voice_search():
         return jsonify({"error": "Could not understand audio"}), 400
     except sr.RequestError:
         return jsonify({"error": "Speech recognition service unavailable"}), 500
+
+@app.route("/speak/<text>")
+def speak(text):
+    try:
+        tts = gTTS(text=text, lang="en")
+        
+        # Save to an in-memory BytesIO object
+        audio_io = io.BytesIO()
+        tts.save(audio_io)
+        audio_io.seek(0)
+
+        # Store in MongoDB GridFS
+        audio_id = fs.put(audio_io, filename=f"{slugify(text)}.mp3")
+
+        # Retrieve and send the file from MongoDB
+        audio_stream = fs.get(audio_id)
+        response = send_file(io.BytesIO(audio_stream.read()), mimetype="audio/mpeg")
+
+        # Delete the file from MongoDB after sending it
+        fs.delete(audio_id)
+
+        return response
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/logout")
 def logout():
