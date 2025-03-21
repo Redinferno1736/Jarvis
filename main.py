@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from pymongo import MongoClient
 from werkzeug.security import check_password_hash, generate_password_hash
 from pymongo.errors import DuplicateKeyError
-from datetime import datetime
+from datetime 
 import helpers
 from slugify import slugify
 import gridfs
