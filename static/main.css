@@ -89,3 +89,8 @@ button {
     font-style: italic;
     font-weight: 700;
 }
+
+.right a{
+    font-size: 20px;
+    cursor: pointer;
+}

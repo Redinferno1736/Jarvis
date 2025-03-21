@@ -13,6 +13,8 @@ import gridfs
 from pydub import AudioSegment
 import speech_recognition as sr
 from gtts import gTTS
+from bson.objectid import ObjectId
+
 
 load_dotenv()
 
@@ -108,6 +110,10 @@ def register_page():
     else:
         return render_template("register.html")
 
+@app.route("/usermanual")
+def home():
+    return render_template("user.html")
+
 @app.route("/home", methods=["GET", "POST"])
 def main_page():
     if "username" not in session:
@@ -183,8 +189,12 @@ def voice_search():
 #     except Exception as e:
 #         return jsonify({"error": str(e)}), 500
 
-@app.route("/speak/<text>")
-def speak(text):
+@app.route("/speak/<id>")
+def speak(id):
+    username=session['username']
+    sav = db[slugify(session['username'])]
+    resp=sav.find_one({'_id': ObjectId(id)})
+    text=resp['reply']
     tts = gTTS(text=text, lang="en")
     audio_bytes = io.BytesIO()
     tts.write_to_fp(audio_bytes)
