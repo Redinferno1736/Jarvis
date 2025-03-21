@@ -16,7 +16,7 @@ from gtts import gTTS
 
 load_dotenv()
 
-# AudioSegment.converter = os.path.abspath("ffmpeg/ffmpeg")
+AudioSegment.converter = os.path.abspath("ffmpeg/ffmpeg")
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
