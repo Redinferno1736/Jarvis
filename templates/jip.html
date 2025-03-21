@@ -281,14 +281,14 @@
         </div>
         <div class="chat-item bot-message">
             <span class="bot-text">{{ doc.reply }}</span>
-            <button class="speak-btn" tyepe='button'onclick="speak('{{ doc._id }}')">🔊</button>
+            <button class="speak-btn" type="button" onclick="speak('{{ doc._id }}')">🔊</button>
         </div>
-
         <div class="chat-time">
-            {{ doc.time.strftime('%Y-%m-%d %I:%M %p') }}
+            {{ doc.time }}  
         </div>
         {% endfor %}
     </div>
+    
 
     <script>
         function speak(text) {

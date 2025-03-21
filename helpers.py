@@ -203,7 +203,6 @@ palm.configure(api_key=os.getenv("PALM_API_KEY"))
 NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 
 
-# ✅ Speech Recognition with Fallback
 def recognize_speech():
     recognizer = sr.Recognizer()
 

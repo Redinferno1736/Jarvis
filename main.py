@@ -11,6 +11,7 @@ import helpers
 from slugify import slugify
 import gridfs
 from pydub import AudioSegment
+import pytz
 import speech_recognition as sr
 from gtts import gTTS
 from bson.objectid import ObjectId
@@ -126,7 +127,7 @@ def main_page():
         user_query = request.form.get('user_query')
         response = helpers.generate_response(user_query,name,trait)
         helpers.speak_text(response)
-        time = datetime.now()
+        time = get_ist_time()
         sav.insert_one({'question': user_query, 'reply': response, 'time': time})
     documents = list(sav.find())
     return render_template("jip.html", documents=documents,username=username,name=name)
@@ -226,6 +227,11 @@ def edit():
     else:
         return render_template('edit.html')
 
+def get_ist_time():
+    utc_now = datetime.datetime.now(datetime.UTC) 
+    ist = pytz.timezone('Asia/Kolkata') 
+    ist_now = utc_now.astimezone(ist) 
+    return ist_now.strftime("%I:%M %p") 
 
 if __name__== "__main__":
     app.run(debug=False)
