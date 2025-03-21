@@ -34,14 +34,12 @@ JARVIS is a **smart AI-powered assistant** that helps users interact naturally t
    ```
 
 2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 
 3. Run the Flask server:
-
-bash
-Copy
-Edit
-python app.py
+   ```bash
+   python app.py
+   ```
