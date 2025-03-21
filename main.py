@@ -111,7 +111,7 @@ def register_page():
         return render_template("register.html")
 
 @app.route("/usermanual")
-def home():
+def usermanual():
     return render_template("user.html")
 
 @app.route("/home", methods=["GET", "POST"])
