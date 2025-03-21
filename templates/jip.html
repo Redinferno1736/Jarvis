@@ -197,7 +197,7 @@
         .input-container {
             display: flex;
             align-items: center;
-            gap: 10px; 
+            gap: 10px;
             position: absolute;
             bottom: 0;
             left: 30%;
@@ -208,17 +208,17 @@
         }
 
         .input-container input {
-            flex-grow: 1; 
+            flex-grow: 1;
             border-radius: 20px;
             height: 4vh;
             padding: 5px 44px;
             background-color: rgb(217, 217, 217);
             border-style: none;
-            width: 30vw; 
+            width: 30vw;
         }
 
         .mic, .send {
-            height:8vh;
+            height: 8vh;
             width: 8vh;
             border-radius: 100%;
             background-color: white;
@@ -244,7 +244,7 @@
         Hello! I am {{name}}, How can I help you?
     </div>
     {% endif %}
-    
+
     <form action="/home" method="post">
         <div class="sb">
             <a href="/">
@@ -260,7 +260,7 @@
                     <li><a href="/edit">Edit Personality</a></li>
                     <li><a href="/logout">Log Out</a></li>
                 </ul>
-            </div>            
+            </div>
         </div>
 
         <div class="input-container">
@@ -278,8 +278,10 @@
             {{ doc.question }}
         </div>
         <div class="chat-item bot-message">
-            {{ doc.reply }}
+            <span class="bot-text">{{ doc.reply }}</span>
+            <button class="speak-btn" onclick="speak('{{ doc.reply | e }}')">🔊</button>
         </div>
+
         <div class="chat-time">
             {{ doc.time.strftime('%Y-%m-%d %I:%M %p') }}
         </div>
@@ -287,34 +289,54 @@
     </div>
 
     <script>
+        function speak(text) {
+            console.log("Speak function called with text:", text); // Debugging log
+            fetch(`/speak/${encodeURIComponent(text)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const audio = new Audio(URL.createObjectURL(blob));
+                    audio.play();
+                })
+                .catch(error => console.error("Error in speech request:", error));
+        }
+
         let mediaRecorder;
         let audioChunks = [];
 
         async function record() {
-            let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
-            
-            mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
-            
-            mediaRecorder.onstop = async () => {
-                let audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-                let formData = new FormData();
-                formData.append("audio", audioBlob, "input.wav");
+            try {
+                let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
 
-                let response = await fetch("/voicesearch", { method: "POST", body: formData });
-                let data = await response.json();
+                mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
 
-                if (data.error) {
-                    alert("Error: " + data.error);
-                    return;
-                }
+                mediaRecorder.onstop = async () => {
+                    let audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+                    let formData = new FormData();
+                    formData.append("audio", audioBlob, "input.wav");
 
-                document.getElementById("textInput").value = data.transcribed_text;
-                audioChunks = [];
-            };
+                    let response = await fetch("/voicesearch", { method: "POST", body: formData });
+                    let data = await response.json();
 
-            mediaRecorder.start();
-            setTimeout(() => mediaRecorder.stop(), 5000); // Record for 5 seconds
+                    if (data.error) {
+                        alert("Error: " + data.error);
+                        return;
+                    }
+
+                    document.getElementById("textInput").value = data.transcribed_text;
+                    audioChunks = [];
+                };
+
+                mediaRecorder.start();
+                setTimeout(() => mediaRecorder.stop(), 5000); // Record for 5 seconds
+            } catch (error) {
+                console.error("Error accessing microphone:", error);
+            }
         }
     </script>
 

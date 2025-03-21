@@ -13,7 +13,6 @@ import gridfs
 from pydub import AudioSegment
 import speech_recognition as sr
 from gtts import gTTS
-from google.cloud import texttospeech
 
 load_dotenv()
 
@@ -174,29 +173,33 @@ def voice_search():
     except sr.RequestError:
         return jsonify({"error": "Speech recognition service unavailable"}), 500
 
+# @app.route("/speak/<text>")
+# def speak(text):
+#     try:
+#         tts = gTTS(text=text, lang="en")
+#         temp_audio_path = "output.mp3"
+#         tts.save(temp_audio_path)
+#         return send_file(temp_audio_path, mimetype="audio/mpeg")
+#     except Exception as e:
+#         return jsonify({"error": str(e)}), 500
+
 @app.route("/speak/<text>")
 def speak(text):
     try:
         tts = gTTS(text=text, lang="en")
+        audio_bytes = io.BytesIO()
+        tts.write_to_fp(audio_bytes)
+        audio_bytes.seek(0)  # Reset pointer
+
+        # Store in GridFS (MongoDB)
+        audio_id = fs.put(audio_bytes.read(), filename="speech.mp3")
         
-        # Save to an in-memory BytesIO object
-        audio_io = io.BytesIO()
-        tts.save(audio_io)
-        audio_io.seek(0)
-
-        # Store in MongoDB GridFS
-        audio_id = fs.put(audio_io, filename=f"{slugify(text)}.mp3")
-
-        # Retrieve and send the file from MongoDB
+        # Retrieve and send the audio
         audio_stream = fs.get(audio_id)
-        response = send_file(io.BytesIO(audio_stream.read()), mimetype="audio/mpeg")
-
-        # Delete the file from MongoDB after sending it
-        fs.delete(audio_id)
-
-        return response
+        return send_file(io.BytesIO(audio_stream.read()), mimetype="audio/mpeg")
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @app.route("/logout")
 def logout():
@@ -217,5 +220,5 @@ def edit():
         return render_template('edit.html')
 
 
-if __name__ == "__main__":
+if __name__== "__main__":
     app.run(debug=False)
