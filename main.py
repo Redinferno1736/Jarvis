@@ -1,5 +1,6 @@
 import os
-from flask import Flask, redirect, url_for, session, request, render_template, flash, send_file, url_for
+import io
+from flask import Flask, redirect, url_for, jsonify, session, request, render_template, flash, send_file, url_for
 from authlib.integrations.flask_client import OAuth
 from dotenv import load_dotenv
 from pymongo import MongoClient
@@ -8,6 +9,9 @@ from pymongo.errors import DuplicateKeyError
 from datetime import datetime
 import helpers
 from slugify import slugify
+import gridfs
+from pydub import AudioSegment
+import speech_recognition as sr
 
 load_dotenv()
 
@@ -17,6 +21,8 @@ oauth = OAuth(app)
 client = MongoClient(os.getenv("MONGO_CLIENT"))
 db = client['userinfo']
 collection = db['users']
+db = client["Audio"]
+fs = gridfs.GridFS(db)
 
 google = oauth.register(
     name="google",
@@ -122,17 +128,47 @@ def new_chat():
     db.drop_collection(sav) 
     return redirect('/home')
 
-@app.route('/voicesearch')
-def vsearch():
-    name=session['data']['name']
-    trait=session['data']['trait']
-    user_query=helpers.recognize_speech()
-    sav = db[slugify(session['username'])]
-    response = helpers.generate_response(user_query,name,trait)
-    helpers.speak_text(response)
-    time = datetime.now()
-    sav.insert_one({'question': user_query, 'reply': response, 'time': time})
-    return redirect('/home')
+# @app.route('/voicesearch')
+# def vsearch():
+#     name=session['data']['name']
+#     trait=session['data']['trait']
+#     user_query=helpers.recognize_speech()
+#     sav = db[slugify(session['username'])]
+#     response = helpers.generate_response(user_query,name,trait)
+#     helpers.speak_text(response)
+#     time = datetime.now()
+#     sav.insert_one({'question': user_query, 'reply': response, 'time': time})
+#     return redirect('/home')
+
+@app.route("/voicesearch", methods=["POST"])
+def voice_search():
+    if "audio" not in request.files:
+        return jsonify({"error": "No audio file provided"}), 400
+
+    audio_file = request.files["audio"]
+    
+    # Convert audio to WAV format before storing in MongoDB
+    audio = AudioSegment.from_file(audio_file)
+    wav_io = io.BytesIO()
+    audio.export(wav_io, format="wav")
+    
+    # Store WAV audio in MongoDB
+    audio_id = fs.put(wav_io.getvalue(), filename="input.wav")
+
+    # Retrieve the audio from MongoDB
+    audio_stream = fs.get(audio_id)
+    
+    recognizer = sr.Recognizer()
+    with sr.AudioFile(io.BytesIO(audio_stream.read())) as source:
+        audio_data = recognizer.record(source)
+
+    try:
+        text = recognizer.recognize_google(audio_data)
+        return jsonify({"transcribed_text": text})
+    except sr.UnknownValueError:
+        return jsonify({"error": "Could not understand audio"}), 400
+    except sr.RequestError:
+        return jsonify({"error": "Speech recognition service unavailable"}), 500
 
 @app.route("/logout")
 def logout():

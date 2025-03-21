@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -55,4 +55,94 @@
 
 </body>
 
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/static/jip.css">
+</head>
+
+<body>
+    {% if not documents %}
+    <div class="txt">
+        Hello! I am {{name}}, How can I help you?
+    </div>
+    {% endif %}
+    
+    <form action="/home" method="post">
+        <div class="sb">
+            <img class="i1" src="/static/assets/jarvis logo.jpg" alt="">
+            <button class="newchat" type="button" onclick="window.location.href='/new'">
+                <img class="i2" src="/static/assets/new-chat_12380562.png" alt="">
+            </button>
+            <div class="profile">
+                <img class="i3" src="/static/assets/pngwing.com.png" alt="">
+                <ul class="dropdown-content">
+                    <li>Name: {{ username or 'N/A' }}</li>
+                    <li><a href="/edit">Edit Personality</a></li>
+                    <li><a href="/logout">Log Out</a></li>
+                </ul>
+            </div>            
+        </div>
+
+        <div class="input-container">
+            <input id="textInput" type="text" placeholder="Type or Record" name="user_query">
+            <button class="mic" type="button" onclick="record()">
+                <img src="/static/assets/pngegg.png" alt="">
+            </button>
+        </div>
+    </form>
+
+    <div class="chat-history">
+        {% for doc in documents %}
+        <div class="chat-item user-message">
+            {{ doc.question }}
+        </div>
+        <div class="chat-item bot-message">
+            {{ doc.reply }}
+        </div>
+        <div class="chat-time">
+            {{ doc.time.strftime('%Y-%m-%d %I:%M %p') }}
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+
+        async function record() {
+            let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            
+            mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
+            
+            mediaRecorder.onstop = async () => {
+                let audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+                let formData = new FormData();
+                formData.append("audio", audioBlob, "input.wav");
+
+                let response = await fetch("/voicesearch", { method: "POST", body: formData });
+                let data = await response.json();
+
+                if (data.error) {
+                    alert("Error: " + data.error);
+                    return;
+                }
+
+                document.getElementById("textInput").value = data.transcribed_text;
+                audioChunks = [];
+            };
+
+            mediaRecorder.start();
+            setTimeout(() => mediaRecorder.stop(), 5000); // Record for 5 seconds
+        }
+    </script>
+
+</body>
 </html>
