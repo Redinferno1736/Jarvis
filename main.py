@@ -185,20 +185,17 @@ def voice_search():
 
 @app.route("/speak/<text>")
 def speak(text):
-    try:
-        tts = gTTS(text=text, lang="en")
-        audio_bytes = io.BytesIO()
-        tts.write_to_fp(audio_bytes)
-        audio_bytes.seek(0)  # Reset pointer
+    tts = gTTS(text=text, lang="en")
+    audio_bytes = io.BytesIO()
+    tts.write_to_fp(audio_bytes)
+    audio_bytes.seek(0)  # Reset pointer
 
-        # Store in GridFS (MongoDB)
-        audio_id = fs.put(audio_bytes.read(), filename="speech.mp3")
-        
-        # Retrieve and send the audio
-        audio_stream = fs.get(audio_id)
-        return send_file(io.BytesIO(audio_stream.read()), mimetype="audio/mpeg")
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    # Store in GridFS (MongoDB)
+    audio_id = fs.put(audio_bytes.read(), filename="speech.mp3")
+    
+    # Retrieve and send the audio
+    audio_stream = fs.get(audio_id)
+    return send_file(io.BytesIO(audio_stream.read()), mimetype="audio/mpeg")
 
 
 @app.route("/logout")

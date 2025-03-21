@@ -14,3 +14,4 @@ requests==2.31.0
 datetime==5.4
 gunicorn==21.2.0
 pydub==0.25.1
+pytz==2024.1
