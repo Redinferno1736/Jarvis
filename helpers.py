@@ -190,6 +190,7 @@ import platform
 from dotenv import load_dotenv
 import requests
 import datetime
+import pytz
 import pyttsx3
 import yt_dlp
 
@@ -278,8 +279,11 @@ def fetch_real_time_data(query):
         return jarvis_response
 
     elif "time" in query:
-        current_time = datetime.datetime.now().strftime("%I:%M %p")  # 12-hour format
-        jarvis_response = f"The current time is {current_time}."
+        utc_now = datetime.datetime.now(datetime.UTC)  # Updated method
+        ist = pytz.timezone('Asia/Kolkata')
+        ist_now = utc_now.astimezone(ist)
+        current_time = ist_now.strftime("%I:%M %p")  # 12-hour format IST
+        jarvis_response = f"The current time in IST is {current_time}."
         print(f"🤖 Jarvis: {jarvis_response}")
         return jarvis_response
 
