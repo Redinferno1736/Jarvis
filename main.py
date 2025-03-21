@@ -16,10 +16,9 @@ import speech_recognition as sr
 from gtts import gTTS
 from bson.objectid import ObjectId
 
-
 load_dotenv()
 
-AudioSegment.converter = os.path.abspath("ffmpeg/ffmpeg")
+# AudioSegment.converter = os.path.abspath("ffmpeg/ffmpeg")
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -130,6 +129,12 @@ def main_page():
         time = get_ist_time()
         sav.insert_one({'question': user_query, 'reply': response, 'time': time})
     documents = list(sav.find())
+    for doc in documents:
+        if isinstance(doc.get("time"), str):  # If time is stored as string (old data)
+            try:
+                doc["time"] = datetime.datetime.strptime(doc['time'], '%Y-%m-%d %I:%M %p')
+            except ValueError:
+                doc["time"] = get_ist_time()
     return render_template("jip.html", documents=documents,username=username,name=name)
 
 @app.route("/new")
@@ -226,12 +231,11 @@ def edit():
         return redirect('/home')
     else:
         return render_template('edit.html')
-
+    
 def get_ist_time():
     utc_now = datetime.datetime.now(datetime.UTC) 
     ist = pytz.timezone('Asia/Kolkata') 
-    ist_now = utc_now.astimezone(ist) 
-    return ist_now.strftime("%I:%M %p") 
+    return utc_now.astimezone(ist)
 
 if __name__== "__main__":
     app.run(debug=False)

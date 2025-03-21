@@ -284,7 +284,7 @@
             <button class="speak-btn" type="button" onclick="speak('{{ doc._id }}')">🔊</button>
         </div>
         <div class="chat-time">
-            {{ doc.time }}  
+            {{ doc.time.strftime('%Y-%m-%d %I:%M %p') }}
         </div>
         {% endfor %}
     </div>

@@ -157,7 +157,6 @@ body{
     display: none;
     position: absolute;
     top: 60%; 
-    right: 0;
     background-color: #fff;
     min-width: 160px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
@@ -217,7 +216,6 @@ body{
             padding: 10px;
             border-radius: 20px;
         }
-    }
     .parent{
         position: relative;
         max-height: 100vh;
