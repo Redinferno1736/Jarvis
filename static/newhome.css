@@ -1,0 +1,245 @@
+body{
+    display: flex;
+}
+
+.close {
+    display: none;
+}
+
+.left{
+    height: 90vh;
+    width: 5vw;
+    padding: 10px 10px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: #D9D9D9;
+}
+
+.right{
+    height: 90vh;
+    width: 90vw;
+    padding: 10px 10px;
+    margin: 10px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.icons{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 470px;
+
+}
+.first{
+    display: flex;
+    flex-direction:column ;
+    gap: 30px;
+
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    top: 88%;
+    background-color: rgb(217, 217, 217);
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.input-container input {
+    flex-grow: 1;
+    border-radius: 20px;
+    height: 4vh;
+    padding: 5px 44px;
+    background-color: rgb(217, 217, 217);
+    border-style: none;
+    width: 50vw;
+}
+
+.mic, .send {
+    height: 8vh;
+    width: 8vh;
+    border-radius: 100%;
+    background-color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.mic img, .send {
+    height: 8vh;
+    width: 8vh;
+    border-radius: 100%;
+    font-weight: bolder;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 60%; 
+    left: 0;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.dropdown-content li,
+.dropdown-content a {
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #333;
+    display: block;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+ .dropdown-content li:hover,
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.second:hover .dropdown-content {
+    display: block;
+} 
+
+.txt{
+    position: absolute;
+    align-self: center;
+    left: 28%;
+    font-size: 30px;
+}
+
+.chat-history {
+    margin-top: 20px;
+    padding: 10px;
+    height: 65vh;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    width: 85vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-message {
+    background-color: #dcf8c6;
+    color: #000;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 70%;
+    align-self: flex-end;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: left;
+}
+
+.bot-message {
+    background-color: #e5e5ea;
+    color: #000;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 70%;
+    align-self: flex-start;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: left;
+}
+
+.chat-time {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.center{
+    display: flex;
+    align-items: center;
+    position: relative;
+    top: 350px;
+}
+
+.newchat{
+    background-color: transparent;
+    border: none;
+}
+
+.hamburger {
+    display: none;
+    cursor: pointer;
+
+}
+.container a{
+    display: none;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 1200px){
+    .left{
+        position: absolute;
+        left: -200%;
+        z-index: 10;
+        height: 80vh;
+        width: 15vw;
+    }
+
+    .icons{
+        gap: 500px;
+        display: flex;
+        align-items: center;
+    }
+
+    .close{
+        padding: 12px;
+    }
+    .idk{
+        display: none;
+    }
+    .small{
+        width: 50px;
+    }
+
+    .close{
+        display: block;
+    }
+    .right{
+        width: 100vw;
+        height: 100vh;
+    }
+    .input-container{
+        position: absolute;
+        bottom: 0;
+        left: -20px;
+    }
+    .chat-history{
+        width: 100vw;
+        height: 75vh;
+    }
+    .container{
+        display: flex;
+        justify-content: space-between;
+    }
+    .hamburger{
+        display: block;
+    }
+    .container a{
+        display: block;
+    }
+
+}

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/static/newhome.css">
+</head>
+
+<body>
+    <div class="left">
+        <div class="icons">
+            <div class="first">
+                <div class="close">
+                    <img width="30" class="invert" src="/static/assets/close.svg" alt="">
+                </div>
+                <a href="/">
+                    <img class="pointer small idk" width="50" src="/static/assets/jarvis logo.jpg" alt="Home">
+                </a>
+                <button class="newchat" type="button" onclick="window.location.href='/new'">
+                    <img class="pointer small" width="40" src="/static/assets/new-chat_12380562.png" alt="">
+                </button>
+
+            </div>
+            <div class="second">
+                <img class="pointer small" width="50" src="/static/assets/pngwing.com.png" alt="">
+                <ul class="dropdown-content">
+                    <li>Name: {{ username or 'N/A' }}</li>
+                    <li><a href="/edit">Edit Personality</a></li>
+                    <li><a href="/logout">Log Out</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div class="right">
+        <div class="container">
+            <img width="30" class="hamburger" src="/static/assets/hamburger.svg" alt="home">
+            <a href="/">
+                <img class="pointer" width="50" src="/static/assets/jarvis logo.jpg" alt="Home">
+            </a>
+        </div>
+        <div class="center">
+            {% if not documents %}
+            <div class="txt">
+                Hello! I am {{name}}, How can I help you?
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="chat-history">
+            {% for doc in documents %}
+            <div class="chat-item user-message">
+                {{ doc.question }}
+            </div>
+            <div class="chat-item bot-message">
+                <span class="bot-text">{{ doc.reply }}</span>
+                <button class="speak-btn" type="button" onclick="speak('{{ doc._id }}')">🔊</button>
+            </div>
+            <div class="chat-time">
+                {{ doc.time }}
+            </div>
+            {% endfor %}
+        </div>
+
+
+        <form action="/home" method="post">
+            <div class="seekbar">
+                <div class="input-container">
+                    <input id="textInput" type="text" placeholder="Type or Record" name="user_query">
+                    <button class="mic pointer" type="button" onclick="record()">
+                        <img width="40" src="/static/assets/pngegg.png" alt="">
+                    </button>
+                    <button class="send pointer" type="submit">Send</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <script>
+        async function main() {
+            document.querySelector(".hamburger").addEventListener("click", () => {
+                document.querySelector(".left").style.left = "0"
+            })
+            document.querySelector(".close").addEventListener("click", () => {
+                document.querySelector(".left").style.left = "-200%"
+            })
+        }
+
+        main()
+
+        function speak(text) {
+            console.log("Speak function called with text:", text); // Debugging log
+            fetch(`/speak/${encodeURIComponent(text)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const audio = new Audio(URL.createObjectURL(blob));
+                    audio.play();
+                })
+                .catch(error => console.error("Error in speech request:", error));
+        }
+
+        let mediaRecorder;
+        let audioChunks = [];
+
+        async function record() {
+            try {
+                let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+
+                mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
+
+                mediaRecorder.onstop = async () => {
+                    let audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+                    let formData = new FormData();
+                    formData.append("audio", audioBlob, "input.wav");
+
+                    let response = await fetch("/voicesearch", { method: "POST", body: formData });
+                    let data = await response.json();
+
+                    if (data.error) {
+                        alert("Error: " + data.error);
+                        return;
+                    }
+
+                    document.getElementById("textInput").value = data.transcribed_text;
+                    audioChunks = [];
+                };
+
+                mediaRecorder.start();
+                setTimeout(() => mediaRecorder.stop(), 5000); // Record for 5 seconds
+            } catch (error) {
+                console.error("Error accessing microphone:", error);
+            }
+        }
+    </script>
+</body>
+
+</html>
